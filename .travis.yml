@@ -8,12 +8,13 @@ scripts :
     - docker run -e CI=true vishnuvardandonti/react-test npm test -- --coverage
 
 after_success :
+    - echo "$docker-secret" | docker login -u "$docker-user" --password-stdin
     - docker build -t vishnuvardandonti/multidocker-client ./client
     - docker build -t vishnuvardandonti/multidocker-nginx ./nginx
     - docker build -t vishnuvardandonti/multidocker-server ./server
     - docker build -t vishnuvardandonti/multidocker-worker ./worker
     # Login to the docker CLI
-    - echo "$docker-secret" | docker login -u "$docker-user" --password-stdin
+    
     #pushing docker files
     - docker push vishnuvardandonti/multidocker-client
     - docker push vishnuvardandonti/multidocker-nginx
