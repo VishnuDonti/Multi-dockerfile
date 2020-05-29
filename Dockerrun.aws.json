@@ -5,24 +5,28 @@
             "name" : "multidocker-client",
             "image" : "vishnuvardandonti/multidocker-client",
             "hostname" : "client",
-            "essential" :  false
+            "essential" :  false,
+            "memory" : 128
         },
         {
             "name" : "multidocker-worker",
             "image" : "vishnuvardandonti/multidocker-worker",
             "hostname" : "worker",
-            "essential" :  false
+            "essential" :  false,
+            "memory" : 128
         },
         {
             "name" : "multidocker-server",
             "image" : "vishnuvardandonti/multidocker-server",
             "hostname" : "appserver",
-            "essential" :  false
+            "essential" :  false,
+            "memory" : 128
         },
         {
             "name" : "multidocker-nginx",
             "image" : "vishnuvardandonti/multidocker-nginx",
-            "essential" :  true,
+            "essential" :  true,            
+            "memory" : 128,
             "portMappings" : [
                 {
                     "hostPort"  : "80",
@@ -32,7 +36,8 @@
             "links" : [
                 "multidocker-client",
                 "multidocker-server"
-            ]
+            ]            
+
         }
     ]
 }
