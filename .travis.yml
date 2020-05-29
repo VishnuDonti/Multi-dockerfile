@@ -1,5 +1,5 @@
 services:
-  -docker
+  - docker
 
 before_install :
     - docker build -t vishnuvardandonti/reacttest -f ./client/Dockerfile.dev ./client
@@ -8,8 +8,8 @@ scripts :
     - docker run -e CI=true vishnuvardandonti/reacttest npm test -- --coverage
 
 after_success :
-    - echo "$docker-user"
-    - echo "$docker-secret" | docker login -u "$docker-user" --password-stdin
+    - echo "$docker_user"
+    - echo "$docker_secret" | docker login -u "$docker_user" --password-stdin
     - docker build -t vishnuvardandonti/multidocker-client ./client
     - docker build -t vishnuvardandonti/multidocker-nginx ./nginx
     - docker build -t vishnuvardandonti/multidocker-server ./server
