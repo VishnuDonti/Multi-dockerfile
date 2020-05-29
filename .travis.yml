@@ -1,0 +1,22 @@
+services:
+  -docker
+
+before_install :
+    - docker build -t vishnuvardandonti/reacttest -f ./client/Dockerfile.dev ./client
+
+scripts : 
+    - docker run -e CI=true vishnuvardandonti/react-test npm test -- --coverage
+
+after_success :
+    - docker build -t vishnuvardandonti/multidocker-client ./client
+    - docker build -t vishnuvardandonti/multidocker-nginx ./nginx
+    - docker build -t vishnuvardandonti/multidocker-server ./server
+    - docker build -t vishnuvardandonti/multidocker-worker ./worker
+    # Login to the docker CLI
+    - echo "$docker-secret" | docker login -u "$docker-user" --password-stdin
+    #pushing docker files
+    - docker push vishnuvardandonti/multidocker-client
+    - docker push vishnuvardandonti/multidocker-nginx
+    - docker push vishnuvardandonti/multidocker-server
+    - docker push vishnuvardandonti/multidocker-worker
+
