@@ -8,7 +8,7 @@ scripts :
     - docker run -e CI=true vishnuvardandonti/reacttest npm test -- --coverage
 
 after_success :
-    - echo "$docker-secret" | docker login -u "$docker-user" --password-stdin
+    - echo docker-secret | docker login -u "$docker-user" --password-stdin
     - docker build -t vishnuvardandonti/multidocker-client ./client
     - docker build -t vishnuvardandonti/multidocker-nginx ./nginx
     - docker build -t vishnuvardandonti/multidocker-server ./server
