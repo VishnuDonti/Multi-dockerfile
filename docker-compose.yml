@@ -1,0 +1,57 @@
+version : '3'
+services:
+  redis-server:
+    image : 'redis'
+  nginx :
+    depends_on :
+      - appserver
+      - client
+    command: [nginx-debug, '-g', 'daemon off;']
+    restart : always
+    ports :
+      - "3050:80"
+    build :
+      dockerfile: Dockerfile.dev
+      context : ./nginx
+  postgres_db:
+    ports:
+      - "5432:5432"
+    image : 'postgres'
+  appserver:
+    depends_on :
+      - postgres_db
+      - redis-server
+    build : 
+      dockerfile : Dockerfile.dev
+      context : ./server
+    volumes :
+      - /app/node_modules
+      - ./server:/app
+    environment :
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres_db
+      - PGDATABASE=postgres
+      - PGPORT=5432
+  client :
+    stdin_open: true
+    build :
+      context : ./client
+      dockerfile: Dockerfile.dev
+    volumes :
+      - /app/node_modules
+      - ./client:/app
+  worker :
+    depends_on :
+      - postgres_db
+      - redis-server
+    environment :
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+    build :
+      context : ./worker
+      dockerfile: Dockerfile.dev
+    volumes :
+      - /app/node_modules
+      - ./worker:/app
