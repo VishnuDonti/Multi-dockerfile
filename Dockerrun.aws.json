@@ -1,0 +1,38 @@
+{
+    "AWSEBDockerrunVersion" : "2",
+    "containerDefinitions" : [
+        {
+            "name" : "multidocker-client",
+            "image" : "vishnuvardandonti/multidocker-client",
+            "hostname" : "client",
+            "essential" :  false
+        },
+        {
+            "name" : "multidocker-worker",
+            "image" : "vishnuvardandonti/multidocker-worker",
+            "hostname" : "worker",
+            "essential" :  false
+        },
+        {
+            "name" : "multidocker-server",
+            "image" : "vishnuvardandonti/multidocker-server",
+            "hostname" : "appserver",
+            "essential" :  false
+        },
+        {
+            "name" : "multidocker-nginx",
+            "image" : "vishnuvardandonti/multidocker-nginx",
+            "essential" :  true,
+            "portMappings" : [
+                {
+                    "hostPort"  : "80",
+                    "containerPort" : "80"
+                }
+            ],
+            "links" : [
+                "multidocker-client",
+                "multidocker-server"
+            ]
+        }
+    ]
+}

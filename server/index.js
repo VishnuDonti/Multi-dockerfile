@@ -14,7 +14,11 @@ const { Pool,Client } = require('pg');
 
 const connectionString = 'postgresql://postgres:example@postgres_db:5432/postgres'
 const pgClient = new Pool({
-    connectionString: connectionString,
+    user: keys.pgUser,
+    host: keys.pgHost,
+    database: keys.pgDatabase,
+    password: keys.pgPassword,
+    port: keys.pgPort
   });
   pgClient.connect((err, client, release) => {
     if (err) {
